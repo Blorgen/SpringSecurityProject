@@ -58,7 +58,7 @@ public class SetupDataLoader implements CommandLineRunner {
         user.setEmail("user");
         user.setFirstName("User");
         user.setLastName("User");
-        user.setRole(Role.ADMIN);
+        user.setRole(Role.USER);
         user.setPassword("$2a$12$VcQ/IUUqHd164c8ta2e8NuolGO4yYYcnzGt6epaUth2EY5.n2/dP2");
         user.setStatus(Status.ACTIVE);
         userRepository.save(user);
