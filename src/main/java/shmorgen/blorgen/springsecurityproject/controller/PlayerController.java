@@ -1,24 +1,21 @@
-package shmorgen.blorgen.springsecurityproject.rest;
+package shmorgen.blorgen.springsecurityproject.controller;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import shmorgen.blorgen.springsecurityproject.model.Player;
-
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import shmorgen.blorgen.springsecurityproject.repository.PlayerRepository;
 
 @Controller
 @RequestMapping("/api/players")
-public class PlayerRestController {
+public class PlayerController {
 
-    private final List<Player> players = Stream.of(
-            new Player(1L, "Ivan", "Ivanov"),
-            new Player(2L, "Semen", "Semenov"),
-            new Player(3L, "Petr", "Petrov")
-    ).collect(Collectors.toList());
+    private final PlayerRepository playerRepository;
+
+    public PlayerController(PlayerRepository playerRepository) {
+        this.playerRepository = playerRepository;
+    }
 
     @GetMapping("/actions")
     public String getActionsPage(Model model){
@@ -28,15 +25,14 @@ public class PlayerRestController {
 
     @GetMapping
     public String getAll(Model model){
-        model.addAttribute("players", players);
+        model.addAttribute("players", playerRepository.findAll());
         return "players/list";
     }
 
     @PreAuthorize("hasAuthority(('players:read'))")
     @GetMapping("/{id}")
     public String getById(@PathVariable Long id, Model model){
-        model.addAttribute("players", players.stream().filter(players -> players.getId().equals(id))
-                .findFirst().orElse(null));
+        model.addAttribute("players", playerRepository.findById(id).orElse(new Player(-1l, "not found","not found")));
         return "players/list";
     }
 
@@ -44,16 +40,18 @@ public class PlayerRestController {
     @PostMapping
     public String create(@ModelAttribute Player unit, Model model){
         model.addAttribute("unit", new Player());
-        this.players.add(unit);
-        model.addAttribute("players", players);
+        playerRepository.save(unit);
+        model.addAttribute("players", playerRepository.findAll());
         return "players/list";
     }
 
     @PreAuthorize("hasAuthority(('players:write'))")
     @GetMapping("/delete/{id}")
     public String deleteById(@PathVariable Long id, Model model){
-        model.addAttribute("players", players);
-        this.players.removeIf(player -> player.getId().equals(id));
+        if (playerRepository.findById(id).isPresent()) {
+            playerRepository.deleteById(id);
+        }
+        model.addAttribute("players", playerRepository.findAll());
         return "players/list";
     }
 }
