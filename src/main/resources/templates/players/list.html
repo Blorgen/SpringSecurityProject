@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Players</title>
+</head>
+<body>
+<table class="table table-striped">
+    <h1>FUCK</h1>
+    <thead>
+    <tr>
+        <th style="width: 150px;">Id</th>
+        <th style="width: 150px;">First Name</th>
+        <th style="width: 150px;">Last Name</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="player : ${players}">
+        <td th:text="${player.id}">Id</td>
+        <td th:text="${player.firstName}">First Name</td>
+        <td th:text="${player.lastName}">Last Name</td>
+        <td><a th:href="@{http://localhost:8080/api/players/delete/{id}(id=${player.id})}">Delete</a></td>
+    </tr>
+    </tbody>
+    <h3>create and update</h3>
+    <button onclick="window.location.href = 'http://localhost:8080/api/players/actions';">Click Here</button>
+</table>
+</body>
+</html>

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>Actions</h1>
+<h2>Create a player</h2>
+<form action="#" th:action="@{/api/players}" th:object="${unit}" method="post">
+    <p>Id: <input type="text" th:field="*{id}" /></p>
+    <p>First Name: <input type="text" th:field="*{firstName}" /></p>
+    <p>Last Name: <input type="text" th:field="*{lastName}" /></p>
+    <p><input type="submit" value="Submit" /></p>
+</form>
+
+</body>
+</html>
