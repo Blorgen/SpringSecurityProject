@@ -8,7 +8,7 @@ This is a Spring Boot application with the use of:
   6. PostgreSql
   7. Docker
 
-You can the application using Docker
+You can run the application using Docker
 ```
 docker build -t spring-project .
 ```
